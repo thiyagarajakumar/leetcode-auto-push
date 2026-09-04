@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeetCode Auto Push</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+<!-- SPLASH SCREEN -->
+<div id="splashScreen">
+
+    <div class="splash-content">
+
+        <div class="logo">⚡</div>
+
+        <h1 class="title-3d">
+            LEETCODE
+            <span>AUTO PUSH</span>
+        </h1>
+
+    </div>
+
+    <div class="developer-name">
+        Developed by <strong>Thiyagu</strong>
+    </div>
+
+</div>
+  <!-- ── Header ──────────────────────────────────────────────────────────── -->
+  <header class="header">
+    <div class="header-logo">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"
+              fill="#0969da" stroke="#0969da" stroke-width="0.5"
+              stroke-linejoin="round"/>
+      </svg>
+      <span class="header-title">LeetCode Auto Push</span>
+    </div>
+   
+  </header>
+
+  <!-- ── Status banner ───────────────────────────────────────────────────── -->
+  <div id="status-banner" class="status-banner status-idle" role="status" aria-live="polite">
+    <span id="status-icon" class="status-icon">⚪</span>
+    <span id="status-text" class="status-text">Configure settings once below</span>
+  </div>
+
+  <!-- ── Navigation Tabs ─────────────────────────────────────────────────── -->
+  <nav class="tab-nav" role="tablist" aria-label="Settings sections">
+    <button type="button" class="tab-btn active" data-tab="tab-github" role="tab" aria-selected="true">GitHub</button>
+    <button type="button" class="tab-btn" data-tab="tab-content" role="tab" aria-selected="false">Solution</button>
+    <button type="button" class="tab-btn" data-tab="tab-folder" role="tab" aria-selected="false">Folder &amp; Commits</button>
+    <button type="button" class="tab-btn" data-tab="tab-readme" role="tab" aria-selected="false">README</button>
+    <button type="button" class="tab-btn" data-tab="tab-ask" role="tab" aria-selected="false">Ask Before Push</button>
+    <button type="button" class="tab-btn" data-tab="tab-history" role="tab" aria-selected="false">History</button>
+  </nav>
+
+  <!-- ── Main ────────────────────────────────────────────────────────────── -->
+  <main class="main">
+    <form id="settings-form" novalidate>
+
+      <!-- ════════ TAB 1: GITHUB ════════ -->
+      <section id="tab-github" class="tab-panel active" role="tabpanel">
+
+        <!-- Onboarding Wizard -->
+        <div id="gh-wizard" class="gh-wizard">
+          <div class="wizard-hero">
+            <div class="wizard-hero-icon">🔗</div>
+            <h2 class="wizard-hero-title">Connect GitHub</h2>
+            
+            <p class="wizard-hero-desc">
+              Automatically save your accepted LeetCode solutions directly to your own GitHub repository.
+            </p>
+          </div>
+
+          <div class="wizard-section">
+            <h3 class="wizard-section-title">How It Works</h3>
+            <ol class="wizard-steps">
+              <li class="wizard-step">
+                <span class="wizard-step-num">①</span>
+                <div class="wizard-step-body">
+                  <strong>Connect Your Account</strong>
+                  <span>Enter your GitHub Personal Access Token below.</span>
+                </div>
+              </li>
+              <li class="wizard-step">
+                <span class="wizard-step-num">②</span>
+                <div class="wizard-step-body">
+                  <strong>Choose a Repository</strong>
+                  <span>Select an existing repo like <code>my-leetcode-solutions</code>.</span>
+                </div>
+              </li>
+              <li class="wizard-step">
+                <span class="wizard-step-num">③</span>
+                <div class="wizard-step-body">
+                  <strong>Configure Structure &amp; README</strong>
+                  <span>Choose folder mode, custom filename format, and automatic README template.</span>
+                </div>
+              </li>
+              <li class="wizard-step">
+                <span class="wizard-step-num">④</span>
+                <div class="wizard-step-body">
+                  <strong>Solve on LeetCode</strong>
+                  <span>Submit a solution and get <em>Accepted</em>.</span>
+                </div>
+              </li>
+              <li class="wizard-step">
+                <span class="wizard-step-num">⑤</span>
+                <div class="wizard-step-body">
+                  <strong>Push to GitHub 🚀</strong>
+                  <span>Extension auto-pushes the code and maintains your repository README.</span>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <div class="wizard-section">
+            <h3 class="wizard-section-title">Before You Start</h3>
+            <ul class="wizard-checklist">
+              <li>✓ You need a <strong>GitHub account</strong></li>
+              <li>✓ Create a <strong>Personal Access Token</strong> with <code>repo</code> scope</li>
+              <li>✓ Have a repository ready (or create one on GitHub)</li>
+            </ul>
+            <a href="https://github.com/join" target="_blank" class="wizard-external-link" id="gh-signup-link">
+              Don't have a GitHub account? Create one ↗
+            </a>
+          </div>
+
+          <button type="button" id="wizard-connect-btn" class="btn btn-wizard-cta">
+            🔗 Set Up GitHub Connection
+          </button>
+        </div>
+
+        <!-- Credential Form -->
+        <div id="gh-form" class="gh-form hidden">
+          <div class="gh-form-header">
+            <h3 class="section-title">GitHub Connection</h3>
+            <span id="gh-connected-badge" class="gh-badge hidden">● Connected</span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="token">
+              Personal Access Token <span class="required">*</span>
+            </label>
+            <div class="input-wrapper">
+              <input
+                id="token"
+                type="password"
+                class="field-input"
+                placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button type="button" id="token-toggle" class="input-eye" aria-label="Toggle token visibility" title="Show/hide token">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/>
+                  <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+              </button>
+            </div>
+            <p class="field-hint">
+              <a href="https://github.com/settings/tokens/new?scopes=repo&description=LeetCode+AutoPush"
+                 target="_blank" class="hint-link" id="token-link">
+                Generate token with <code>repo</code> scope ↗
+              </a>
+            </p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="owner">
+              GitHub Username <span class="required">*</span>
+            </label>
+            <input
+              id="owner"
+              type="text"
+              class="field-input"
+              placeholder="your-github-username"
+              autocomplete="username"
+              spellcheck="false"
+            />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="repo">
+              Repository Name <span class="required">*</span>
+            </label>
+            <input
+              id="repo"
+              type="text"
+              class="field-input"
+              placeholder="leetcode-solutions"
+              spellcheck="false"
+            />
+            <p class="field-hint">Must exist on GitHub. Can be public or private.</p>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="branch">Branch</label>
+            <input
+              id="branch"
+              type="text"
+              class="field-input"
+              placeholder="main"
+              spellcheck="false"
+            />
+          </div>
+
+          <div class="actions">
+            <button type="button" id="test-btn" class="btn btn-secondary">
+              Test Connection
+            </button>
+            <button type="button" id="wizard-back-btn" class="btn btn-ghost">
+              ← Back to Guide
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ════════ TAB 2: SOLUTION FILE CONTENT ════════ -->
+      <section id="tab-content" class="tab-panel" role="tabpanel">
+        <h3 class="section-title">Solution File Content</h3>
+        <p class="section-desc">Choose what metadata comments are added inside each individual solution file.</p>
+
+        <div class="checkbox-list">
+          <label class="checkbox-label">
+            <input type="checkbox" id="inc-number" />
+            <span>Problem Number</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="inc-name" />
+            <span>Problem Name</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="inc-diff" />
+            <span>Difficulty</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="inc-topic" />
+            <span>Topic</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="inc-link" />
+            <span>Problem Link</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="inc-time" />
+            <span>Time Complexity</span>
+            <span class="checkbox-hint">Added only when detected</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="inc-space" />
+            <span>Space Complexity</span>
+            <span class="checkbox-hint">Added only when detected</span>
+          </label>
+          <label class="checkbox-label locked">
+            <input type="checkbox" id="inc-code" checked disabled />
+            <span><strong>Solution Code</strong> — Required</span>
+          </label>
+        </div>
+
+        <div class="sub-group">
+          <h4 class="sub-title">Problem Folder README</h4>
+          <label class="checkbox-label">
+            <input type="checkbox" id="create-readme" />
+            <span>Create a problem-specific <code>README.md</code> in problem folder</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- ════════ TAB 3: FOLDER & COMMITS ════════ -->
+      <section id="tab-folder" class="tab-panel" role="tabpanel">
+
+        <!-- Folder Organization -->
+        <h3 class="section-title">Folder Organization</h3>
+        <p class="section-desc">Choose where solution files are placed in your repository.</p>
+
+        <div class="field-group">
+          <label class="field-label" for="folder-mode">Organization Mode</label>
+          <select id="folder-mode" class="field-select">
+            <option value="topic">Topic Based</option>
+            <option value="difficulty">Difficulty Based</option>
+            <option value="language">Language Based</option>
+            <option value="root">Flat Repository</option>
+            <option value="custom">Custom Structure</option>
+          </select>
+        </div>
+
+        <div id="folder-preview-box" class="preview-box">
+          <span class="preview-label">Folder Structure Preview</span>
+          <pre id="folder-preview-text" class="preview-code"></pre>
+        </div>
+
+        <div id="custom-folder-group" class="field-group hidden">
+          <label class="field-label" for="custom-folder-template">Custom Folder Template</label>
+          <input id="custom-folder-template" type="text" class="field-input" placeholder="{topic}" />
+          <div class="var-chips">
+            <span class="var-chip">{topic}</span>
+            <span class="var-chip">{difficulty}</span>
+            <span class="var-chip">{language}</span>
+          </div>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- Problem Number & Name Formatting -->
+        <h3 class="section-title">Filename &amp; Style Settings</h3>
+        <p class="section-desc">Customize problem number padding, name casing, separators, and template.</p>
+
+        <!-- Problem Number Format -->
+        <div class="field-group">
+          <label class="field-label" for="problem-number-format">Problem Number Format</label>
+          <select id="problem-number-format" class="field-select">
+            <option value="raw">1 (No leading zeros e.g. 3, 219)</option>
+            <option value="01">01 (2 digits e.g. 03, 219)</option>
+            <option value="001">001 (3 digits e.g. 003, 219)</option>
+            <option value="0001">0001 (4 digits e.g. 0003, 0219)</option>
+          </select>
+        </div>
+
+        <!-- Problem Name Style: Case & Separator in two columns -->
+        <div class="two-col">
+          <div class="field-group">
+            <label class="field-label" for="problem-name-case">Case Style</label>
+            <select id="problem-name-case" class="field-select">
+              <option value="title">Title Case (Longest Palindromic Substring)</option>
+              <option value="lower">lowercase (longest palindromic substring)</option>
+              <option value="upper">UPPERCASE (LONGEST PALINDROMIC SUBSTRING)</option>
+              <option value="original">Original Title</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="problem-name-separator">Separator</label>
+            <select id="problem-name-separator" class="field-select">
+              <option value="hyphen">Hyphen (-)</option>
+              <option value="underscore">Underscore (_)</option>
+              <option value="space">Space ( )</option>
+              <option value="none">No Separator</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Custom Filename Format Input (Directly Editable) -->
+        <div class="field-group">
+          <label class="field-label" for="custom-filename-template">
+            Custom Filename Format <span class="field-sublabel">(Click &amp; type directly)</span>
+          </label>
+          <input
+            id="custom-filename-template"
+            type="text"
+            class="field-input"
+            value="{problemNumber}-{problemName}"
+            placeholder="{problemNumber}-{problemName}"
+            spellcheck="false"
+          />
+          <div class="var-chips">
+            <span class="var-chip" data-insert="{problemNumber}">{problemNumber}</span>
+            <span class="var-chip" data-insert="{problemName}">{problemName}</span>
+            <span class="var-chip" data-insert="{language}">{language}</span>
+            <span class="var-chip" data-insert="{difficulty}">{difficulty}</span>
+            <span class="var-chip" data-insert="{topic}">{topic}</span>
+          </div>
+        </div>
+
+        <!-- Live Filename Preview -->
+        <div class="preview-box">
+          <span class="preview-label">Live Filename Preview</span>
+          <code id="filename-preview-text" class="preview-code-inline">0003-Longest-Palindromic-Substring.java</code>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- Topic Strategy -->
+        <h3 class="section-title">Topic Strategy</h3>
+        <div class="field-group">
+          <label class="field-label" for="topic-strategy">Primary Topic</label>
+          <select id="topic-strategy" class="field-select">
+            <option value="first">Use First LeetCode Topic</option>
+            <option value="user_preferred">Use My Preferred Topic</option>
+            <option value="all">All Topics (hyphen-separated)</option>
+          </select>
+        </div>
+
+        <div id="preferred-topic-group" class="field-group hidden">
+          <label class="field-label" for="user-preferred-topic">Your Preferred Topic</label>
+          <input id="user-preferred-topic" type="text" class="field-input" placeholder="e.g. Dynamic Programming" />
+        </div>
+
+        <hr class="divider" />
+
+
+
+        <!-- Duplicate Handling -->
+        <h3 class="section-title">When Same Problem Is Solved Again</h3>
+        <div class="field-group">
+          <select id="duplicate-handling" class="field-select">
+            <option value="replace">Replace existing solution</option>
+            <option value="version">Save as new version (e.g. …-v2.java)</option>
+          </select>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- Commit Message -->
+        <h3 class="section-title">Commit Message</h3>
+        <div class="field-group">
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="commit-mode" id="commit-mode-default" value="default" checked />
+              <div class="radio-body">
+                <span class="radio-title">Default</span>
+                <code class="radio-example">Solved LeetCode #{problemNumber}: {problemName} [{language}]</code>
+              </div>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="commit-mode" id="commit-mode-short" value="short" />
+              <div class="radio-body">
+                <span class="radio-title">Short</span>
+                <code class="radio-example">Add solution for {problemName}</code>
+              </div>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="commit-mode" id="commit-mode-custom" value="custom" />
+              <div class="radio-body">
+                <span class="radio-title">Custom Template</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div id="custom-commit-group" class="field-group hidden">
+          <label class="field-label" for="commit-template">Custom Commit Template</label>
+          <input id="commit-template" type="text" class="field-input" placeholder="Solved LeetCode #{problemNumber}: {problemName}" />
+          <div class="var-chips">
+            <span class="var-chip" data-insert="{problemNumber}">{problemNumber}</span>
+            <span class="var-chip" data-insert="{problemName}">{problemName}</span>
+            <span class="var-chip" data-insert="{topic}">{topic}</span>
+            <span class="var-chip" data-insert="{difficulty}">{difficulty}</span>
+            <span class="var-chip" data-insert="{language}">{language}</span>
+          </div>
+        </div>
+
+        <div class="preview-box">
+          <span class="preview-label">Live Commit Preview</span>
+          <code id="commit-preview-text" class="preview-code-inline">Solved LeetCode #3: Longest Palindromic Substring [Java]</code>
+        </div>
+
+      </section>
+
+      <!-- ════════ TAB 4: COMMON REPOSITORY README ════════ -->
+      <section id="tab-readme" class="tab-panel" role="tabpanel">
+        <div class="readme-panel-header">
+          <h3 class="section-title">📄 Repository README.md</h3>
+          <p class="section-desc">
+            Automatically create and maintain a common README.md in your repository that organizes all pushed solutions.
+            <br><em>README organization is independent of your folder structure.</em>
+          </p>
+        </div>
+
+        <!-- Automatic README Toggle -->
+        <div class="field-group">
+          <label class="checkbox-label checkbox-highlight">
+            <input type="checkbox" id="auto-readme" checked />
+            <div class="checkbox-content">
+              <strong>Automatically maintain README.md</strong>
+              <span class="checkbox-hint">Generates clickable solution links and keeps your repo catalog updated after every push.</span>
+            </div>
+          </label>
+        </div>
+
+        <div id="readme-settings-container">
+          <!-- Title & Description -->
+          <div class="field-group">
+            <label class="field-label" for="readme-title">Repository Title</label>
+            <input id="readme-title" type="text" class="field-input" value="LeetCode Solutions" placeholder="LeetCode Solutions" />
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="readme-desc">Description <span class="field-sublabel">(Optional)</span></label>
+            <textarea id="readme-desc" class="field-textarea" rows="2" placeholder="A collection of my coding solutions and problem-solving practice.">A collection of my coding solutions and problem-solving practice.</textarea>
+          </div>
+
+          <hr class="divider" />
+
+          <!-- Template Selection -->
+          <h3 class="section-title">README Template</h3>
+          <div class="field-group">
+            <select id="readme-template" class="field-select">
+              <option value="topic-table">LeetCode Topic Table (Topic → Problem Table)</option>
+              <option value="lang-category-list">Language Category List (Language → Category → Problems)</option>
+              <option value="difficulty">Difficulty Based (Easy / Medium / Hard → Problems)</option>
+              <option value="language">Language Based (Java / Python / C++ → Problems)</option>
+              <option value="custom">Custom Template (Custom Hierarchy)</option>
+            </select>
+          </div>
+
+          <!-- Custom Structure Visual Builder -->
+          <div id="readme-custom-struct-group" class="field-group hidden">
+            <label class="field-label">Custom Hierarchy Builder</label>
+            <div class="struct-builder">
+              <div class="struct-level">
+                <span class="struct-tag">Level 1</span>
+                <select id="struct-level-1" class="field-select struct-select">
+                  <option value="Topic">Topic</option>
+                  <option value="Language">Language</option>
+                  <option value="Difficulty">Difficulty</option>
+                  <option value="Category">Category</option>
+                </select>
+              </div>
+              <div class="struct-arrow">↓</div>
+              <div class="struct-level">
+                <span class="struct-tag">Level 2</span>
+                <select id="struct-level-2" class="field-select struct-select">
+                  <option value="Problems">Problems (Final)</option>
+                  <option value="Topic">Topic</option>
+                  <option value="Category">Category</option>
+                  <option value="Difficulty">Difficulty</option>
+                  <option value="Language">Language</option>
+                  <option value="None">None</option>
+                </select>
+              </div>
+              <div id="struct-level-3-row" class="struct-level hidden">
+                <div class="struct-arrow">↓</div>
+                <span class="struct-tag">Level 3</span>
+                <div class="struct-fixed">Problems</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Manager -->
+          <div class="field-group">
+            <div class="flex-between">
+              <label class="field-label">Custom Section Manager</label>
+              <button type="button" id="readme-add-section-btn" class="btn-tiny">+ Add Section</button>
+            </div>
+            <div style="margin-bottom: 8px;">
+              <label class="checkbox-label" style="padding: 4px 0;">
+                <input type="checkbox" id="auto-add-sections" checked />
+                <div class="checkbox-content">
+                  <span style="font-weight: 600; font-size: 12px;">Automatically add new detected topics</span>
+                  <span class="checkbox-hint">New topics that are not currently in your section list will automatically be added when a solution is pushed.</span>
+                </div>
+              </label>
+            </div>
+            <div id="readme-section-list" class="section-manager-list">
+              <!-- Dynamically rendered custom sections with Move Up / Move Down / Delete -->
+            </div>
+          </div>
+
+
+          <!-- Topic Strategy -->
+          <h3 class="section-title">Topic Strategy</h3>
+          <div class="field-group">
+            <label class="field-label" for="readme-topic-strategy">Primary Topic</label>
+            <select id="readme-topic-strategy" class="field-select">
+              <option value="first">Use First LeetCode Topic</option>
+              <option value="user_preferred">Use My Preferred Topic</option>
+              <option value="all">All Topics (hyphen-separated)</option>
+            </select>
+          </div>
+
+          <div id="readme-preferred-topic-group" class="field-group hidden">
+            <label class="field-label" for="readme-user-preferred-topic">Your Preferred Topic</label>
+            <input id="readme-user-preferred-topic" type="text" class="field-input" placeholder="e.g. Dynamic Programming" />
+          </div>
+
+          <hr class="divider" />
+
+          <!-- Display Style -->
+          <h3 class="section-title">Display Style</h3>
+          <div class="field-group">
+            <select id="readme-display-style" class="field-select">
+              <option value="table">Markdown Table</option>
+              <option value="bullet">Bullet List (- Problem)</option>
+              <option value="numbered">Numbered List (1. Problem)</option>
+            </select>
+          </div>
+
+          <!-- Custom Table Columns -->
+          <div id="readme-columns-group" class="field-group">
+            <label class="field-label">Table Columns</label>
+            <div class="col-checkbox-grid">
+              <label class="checkbox-chip">
+                <input type="checkbox" id="col-number" checked />
+                <span>Problem Number</span>
+              </label>
+              <label class="checkbox-chip">
+                <input type="checkbox" id="col-name" checked />
+                <span>Problem Name</span>
+              </label>
+              <label class="checkbox-chip">
+                <input type="checkbox" id="col-diff" checked />
+                <span>Difficulty</span>
+              </label>
+              <label class="checkbox-chip">
+                <input type="checkbox" id="col-lang" checked />
+                <span>Language</span>
+              </label>
+              <label class="checkbox-chip">
+                <input type="checkbox" id="col-topic" />
+                <span>Topic</span>
+              </label>
+              <label class="checkbox-chip">
+                <input type="checkbox" id="col-time" />
+                <span>Time Complexity</span>
+              </label>
+              <label class="checkbox-chip">
+                <input type="checkbox" id="col-space" />
+                <span>Space Complexity</span>
+              </label>
+              <label class="checkbox-chip">
+                <input type="checkbox" id="col-problem-link" />
+                <span>LeetCode Link</span>
+              </label>
+              <label class="checkbox-chip">
+                <input type="checkbox" id="col-solution-link" />
+                <span>Solution File Link</span>
+              </label>
+            </div>
+          </div>
+
+          <hr class="divider" />
+
+          <!-- Sorting & Existing README Handling -->
+          <div class="two-col">
+            <div class="field-group">
+              <label class="field-label" for="readme-sort-by">Problem Sorting</label>
+              <select id="readme-sort-by" class="field-select">
+                <option value="number-asc">Problem Number (Ascending)</option>
+                <option value="number-desc">Problem Number (Descending)</option>
+                <option value="name-asc">Problem Name (A-Z)</option>
+                <option value="name-desc">Problem Name (Z-A)</option>
+                <option value="difficulty">Difficulty (Easy → Hard)</option>
+                <option value="recent">Recently Added</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="readme-section-sort">Section Order</label>
+              <select id="readme-section-sort" class="field-select">
+                <option value="alphabetical">Alphabetical Order</option>
+                <option value="custom">Custom Section Order</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="readme-existing-handling">Existing README.md Found</label>
+            <select id="readme-existing-handling" class="field-select">
+              <option value="section-markers">Update only Coding Platform section (Safe Markers)</option>
+              <option value="replace">Replace entire README.md</option>
+              <option value="keep">Keep existing README unchanged</option>
+            </select>
+            <p class="field-hint">
+              Safe markers use <code>&lt;!-- CODING-PLATFORM-START --&gt;</code> to protect your other custom README content.
+            </p>
+          </div>
+
+          <hr class="divider" />
+
+          <!-- Live README Preview -->
+          <div class="preview-header">
+            <h3 class="section-title">Live README Preview</h3>
+            <span id="readme-preview-badge" class="preview-badge">Example Preview</span>
+          </div>
+          <div class="readme-preview-box">
+            <pre id="readme-live-preview" class="readme-preview-code"></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- ════════ TAB 5: ASK BEFORE PUSH ════════ -->
+      <section id="tab-ask" class="tab-panel" role="tabpanel">
+        <h3 class="section-title">Ask Before Push</h3>
+        <p class="section-desc">
+          When checked, a confirmation dialog appears before pushing — with values pre-filled from auto-detected data.
+          Unchecked items push automatically using the generated values.
+        </p>
+
+        <div class="checkbox-list">
+          <label class="checkbox-label">
+            <input type="checkbox" id="ask-readme-topics" />
+            <div class="checkbox-content">
+              <span>Select specific topic(s) for Common README</span>
+              <span class="checkbox-hint">Choose which topic(s) the pushed solution should be added under in the Common README.md</span>
+            </div>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="ask-topic" />
+            <span>Confirm Topic</span>
+          </label>
+
+          <label class="checkbox-label">
+            <input type="checkbox" id="ask-folder" />
+            <span>Confirm Folder</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="ask-filename" />
+            <span>Confirm File Name</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="ask-time" />
+            <span>Enter Time Complexity</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="ask-space" />
+            <span>Enter Space Complexity</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" id="ask-commit" />
+            <span>Confirm Commit Message</span>
+          </label>
+        </div>
+      </section>
+
+      <!-- ════════ TAB 6: HISTORY ════════ -->
+      <section id="tab-history" class="tab-panel" role="tabpanel">
+        <div class="history-header">
+          <h3 class="section-title">Recent Activity</h3>
+          <button type="button" id="clear-history-btn" class="btn-clear" title="Clear all history">Clear</button>
+        </div>
+        <div id="history-list" class="history-list">
+          <p class="history-empty">No pushes yet. Solve a LeetCode problem to get started!</p>
+        </div>
+      </section>
+
+      <!-- ── Save Bar ── -->
+      <div class="save-bar">
+        <button type="submit" id="save-btn" class="btn btn-primary btn-full">
+          <span id="save-btn-text">Save All Settings</span>
+          <svg id="save-spinner" class="spinner hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+        </button>
+      </div>
+
+      <div id="form-error" class="form-error hidden" role="alert"></div>
+      <div id="form-success" class="form-success hidden" role="status"></div>
+
+    </form>
+  </main>
+
+  <!-- ── Footer ──────────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    Settings saved once &amp; applied automatically on Accepted ✅
+  </footer>
+<div class="developer">
+    Developed by Thiyagu ❤️
+</div>
+  <script type="module" src="popup.js"></script>
+
+</body>
+</html>
